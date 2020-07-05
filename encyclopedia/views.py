@@ -16,7 +16,10 @@ def entry(request, entry):
     # Put contents inside entry template
     if util.get_entry(entry):
         return render(request, "encyclopedia/entry.html", {
-            "entry": entry
+            "entry": entry,
+            "contents": util.convert_md(entry)
         })
     else:
-        return render(request, "encyclopedia/error.html")
+        return render(request, "encyclopedia/error.html", {
+            "error": "404 Error, this page does not exist"
+        })

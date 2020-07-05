@@ -2,6 +2,7 @@ import re
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
+from markdown2 import Markdown
 
 
 def list_entries():
@@ -37,6 +38,12 @@ def get_entry(title):
         return None
 
 # TODO
-# Convert Markdown to HTML using Regex
-def convert_md(md):
-    return None
+def convert_md(mdFile):
+    """ 
+    Read contents of Markdown file and return HTML. 
+    """
+    with open(f"./entries/{mdFile}.md") as f:
+        contents = f.read()
+    markdowner = Markdown()
+    ourHtml = markdowner.convert(contents)
+    return ourHtml
