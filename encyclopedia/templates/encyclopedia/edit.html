@@ -12,16 +12,19 @@ Edit - {{ title }}
 
 <form action="{% url 'editEntry' entry %}" method="POST">
     {% csrf_token %}
+
     <h4>Entry Title</h4>
     <div class="fieldWrapper">
         {{ form.title.errors }}
         {{ form.title }}
     </div>
+
     <h4>Entry Contents</h4>
     <div class="fieldWrapper">
         {{ form.contents.errors }}
         {{ form.contents }}
     </div>
+
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
 
