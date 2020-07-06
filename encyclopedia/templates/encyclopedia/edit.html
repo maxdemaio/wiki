@@ -12,7 +12,9 @@ Edit - {{ title }}
 
 <!--TODO Prepopulate with contents and entry title-->
 <!-- Upon submission, make a POST to same route and edit entry contents on backend -->
-<form class="mr-5">
+<form class="mr-5" action="{% url 'editEntry' entry %}" method="POST">
+    <!-- Token to prevent CSRF-->
+    {% csrf_token %}
     <h4>Entry Title</h4>
     <div class="form-group">
         <input type="text" class="form-control" id="title" value="{{ title }}">

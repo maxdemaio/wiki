@@ -1,5 +1,7 @@
+from django.shortcuts import redirect
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.urls import reverse
 from . import util
 
 
@@ -24,13 +26,16 @@ def view_entry(request, entry):
 
 def edit_entry(request, entry):
     """ Allow a user to edit an entry """
-    if util.get_entry(entry):
-        return render(request, "encyclopedia/edit.html", {
-            "entry": entry,
-            "contents": util.read_contents(entry),
-            "title": util.get_title(entry)
-        })
+    if request.method == "POST":
+        return redirect(reverse('viewEntry', kwargs={'entry': entry}))
     else:
-        return render(request, "encyclopedia/error.html", {
-            "error": "404 Error, this page does not exist"
-        })
+        if util.get_entry(entry):
+            return render(request, "encyclopedia/edit.html", {
+                "entry": entry,
+                "contents": util.read_contents(entry),
+                "title": util.get_title(entry)
+            })
+        else:
+            return render(request, "encyclopedia/error.html", {
+                "error": "404 Error, this page does not exist"
+            })
