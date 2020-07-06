@@ -1,3 +1,4 @@
+import os
 import re
 
 from django.core.files.base import ContentFile
@@ -37,7 +38,7 @@ def get_entry(title):
     except FileNotFoundError:
         return None
 
-# TODO
+
 def convert_md(mdFile):
     """ 
     Read contents of Markdown file and return HTML. 
@@ -47,3 +48,18 @@ def convert_md(mdFile):
     markdowner = Markdown()
     ourHtml = markdowner.convert(contents)
     return ourHtml
+
+
+def get_title(mdFile):
+    base = os.path.basename(f"./entries/{mdFile}.md")
+    title = os.path.splitext(base)[0]
+    return title
+
+
+def read_contents(mdFile):
+    """ 
+    Return the contents of a Markdown file. 
+    """
+    with open(f"./entries/{mdFile}.md") as f:
+        contents = f.read()
+    return contents

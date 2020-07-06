@@ -14,7 +14,8 @@ def view_entry(request, entry):
     if util.get_entry(entry):
         return render(request, "encyclopedia/entry.html", {
             "entry": entry,
-            "contents": util.convert_md(entry)
+            "contents": util.convert_md(entry),
+            "title": util.get_title(entry)
         })
     else:
         return render(request, "encyclopedia/error.html", {
@@ -26,6 +27,8 @@ def edit_entry(request, entry):
     if util.get_entry(entry):
         return render(request, "encyclopedia/edit.html", {
             "entry": entry,
+            "contents": util.read_contents(entry),
+            "title": util.get_title(entry)
         })
     else:
         return render(request, "encyclopedia/error.html", {
