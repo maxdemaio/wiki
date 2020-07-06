@@ -63,14 +63,3 @@ def read_contents(mdFile):
     with open(f"./entries/{mdFile}.md") as f:
         contents = f.read()
     return contents
-
-
-# TODO Change title and contents of a file
-def change_title_contents(prevTitle, newTitle, newContents):
-    """
-    Change the title and contents of a Markdown file.
-    """
-    os.rename(f"./entries/{prevTitle}.md", f"./entries/{newTitle}.md")
-    with open(f"./entries/{newTitle}.md", "w") as f:
-        f.write(newContents)
-    return

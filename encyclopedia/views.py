@@ -36,12 +36,11 @@ def edit_entry(request, entry):
 
         # Check whether form is valid
         if form.is_valid():
-            # Process the data and redirect
-            prevTitle = entry
-            newTitle = form.cleaned_data['title']
-            newContents = form.cleaned_data['contents']
-            util.change_title_contents(prevTitle, newTitle, newContents)
-            return redirect(reverse('viewEntry', kwargs={'entry': newTitle}))
+            # Update contents/create new file and redirect
+            title = form.cleaned_data['title']
+            contents = form.cleaned_data['contents'].rstrip("\n")
+            util.save_entry(title, contents)
+            return redirect(reverse('viewEntry', kwargs={'entry': title}))
         else:
             title = util.get_title(entry)
             contents = util.read_contents(entry)
