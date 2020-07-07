@@ -67,7 +67,6 @@ def edit_entry(request, entry):
                 "error": "404 Error, this page does not exist"
             })
 
-# TODO
 def create_entry(request):
     """ Allow a user to create an entry """
     if request.method == "POST":
