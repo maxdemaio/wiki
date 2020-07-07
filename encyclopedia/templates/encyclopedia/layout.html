@@ -22,7 +22,7 @@
                     <a href="{% url 'createEntry' %}">Create New Page</a>
                 </div>
                 <div>
-                    <a href="#">Random Page</a>
+                    <a onclick="randomPage()" href="#">Random Page</a>
                 </div>
                 {% block nav %}
                 {% endblock %}
@@ -33,6 +33,21 @@
                 {% endblock %}
             </div>
         </div>
-    <script src="{% static 'encyclopedia/scripts.js' %}"></script>
+
+    <script>
+        // Direct user to a random existing page
+            function randomPage() {
+                console.log("Example log");
+                // Get length of entries
+                entryLength = document.querySelectorAll(".entry").length
+                console.log(entryLength)
+
+                /* TODO
+                Choose random entry
+                Generate random entry URL
+                window.location = "{% url 'viewEntry' 'CSS' %}"; */
+            };
+    </script>
+
     </body>
 </html>
