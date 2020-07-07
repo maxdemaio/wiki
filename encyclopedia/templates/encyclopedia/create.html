@@ -3,15 +3,21 @@
 <!-- TODO -->
 <!-- Make it so it has the entry here-->
 {% block title %}
-Edit - {{ title }}
+    Create
 {% endblock %}
 
 {% block body %}
 
-<h1>Edit {{ entry }}</h1>
+<h1>Create</h1>
 
-<form action="{% url 'editEntry' entry %}" method="POST">
+<form action="{% url 'createEntry' %}" method="POST">
     {% csrf_token %}
+
+    <h4>Entry Title</h4>
+    <div class="fieldWrapper">
+        {{ form.title.errors }}
+        {{ form.title }}
+    </div>
 
     <h4>Entry Contents</h4>
     <div class="fieldWrapper">

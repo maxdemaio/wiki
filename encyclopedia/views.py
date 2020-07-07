@@ -6,6 +6,9 @@ from . import util
 
 
 class NewEditForm(forms.Form):
+    contents = forms.CharField(label="Contents", widget=forms.Textarea)
+
+class NewCreateForm(forms.Form):
     title = forms.CharField(label="Title", max_length=100)
     contents = forms.CharField(label="Contents", widget=forms.Textarea)
 
@@ -33,14 +36,13 @@ def edit_entry(request, entry):
     if request.method == "POST":
         # Create a form instance and populate it with data from the request
         form = NewEditForm(request.POST)
-
+       
         # Check whether form is valid
         if form.is_valid():
             # Update contents/create new file and redirect
-            title = form.cleaned_data['title']
-            contents = form.cleaned_data['contents'].rstrip("\n")
-            util.save_entry(title, contents)
-            return redirect(reverse('viewEntry', kwargs={'entry': title}))
+            contents = form.cleaned_data['contents'].replace("\n", "")
+            util.edit_entry(entry, contents)
+            return redirect(reverse('viewEntry', kwargs={'entry': entry}))
         else:
             title = util.get_title(entry)
             contents = util.read_contents(entry)
@@ -64,3 +66,26 @@ def edit_entry(request, entry):
             return render(request, "encyclopedia/error.html", {
                 "error": "404 Error, this page does not exist"
             })
+
+# TODO
+def create_entry(request):
+    """ Allow a user to create an entry """
+    if request.method == "POST":
+        # Create a form instance and populate it with data from the request
+        form = NewCreateForm(request.POST)
+
+        # Check whether form is valid
+        if form.is_valid():
+            # TODO Create entry (save post again)
+            title = form.cleaned_data['title']
+            contents = form.cleaned_data['contents']
+            util.create_entry(title, contents)
+            # TODO: if returns false, display error that name already exists
+
+            return redirect(reverse(index))
+    else:
+        form = NewCreateForm()
+        
+    return render(request, "encyclopedia/create.html", {
+        "form": form
+    })
