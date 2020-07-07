@@ -76,13 +76,16 @@ def create_entry(request):
 
         # Check whether form is valid
         if form.is_valid():
-            # TODO Create entry (save post again)
             title = form.cleaned_data['title']
-            contents = form.cleaned_data['contents']
-            util.create_entry(title, contents)
-            # TODO: if returns false, display error that name already exists
+            contents = form.cleaned_data['contents'].replace("\n", "")
 
-            return redirect(reverse(index))
+            # Display error that name already exists
+            if util.create_entry(title, contents):
+                return redirect(index)
+            else:
+                return render(request, "encyclopedia/error.html", {
+                    "error": "Error, this page already exists"
+                })
     else:
         form = NewCreateForm()
         

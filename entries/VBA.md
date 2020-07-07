@@ -1,0 +1,1 @@
+# VBAVisual Basic for Applications is an implementation of Microsoft's event-driven programming language Visual Basic 6, which was declared legacy in 2008, and its associated integrated development environment.
