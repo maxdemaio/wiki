@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.urls import reverse
 from . import util
-
+from random import randint
 
 class NewEditForm(forms.Form):
     contents = forms.CharField(label="Contents", widget=forms.Textarea)
@@ -91,3 +91,9 @@ def create_entry(request):
     return render(request, "encyclopedia/create.html", {
         "form": form
     })
+
+def random_entry(request):
+    """ Generate a page for a random entry """
+    entries = util.list_entries()
+    randEntry = randint(0, len(entries) - 1)
+    return redirect(reverse('viewEntry', kwargs={'entry': entries[randEntry]}))
