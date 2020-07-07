@@ -60,6 +60,7 @@ def read_contents(mdFile):
         contents = f.read()
     return contents
 
+
 def create_entry(title, content):
     """
     Allow creation of an entry. If page already exists,

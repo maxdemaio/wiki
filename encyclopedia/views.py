@@ -1,9 +1,12 @@
+from random import randint
+
+from . import util
+
 from django import forms
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.urls import reverse
-from . import util
-from random import randint
+
 
 class NewEditForm(forms.Form):
     contents = forms.CharField(label="Contents", widget=forms.Textarea)
@@ -11,6 +14,10 @@ class NewEditForm(forms.Form):
 class NewCreateForm(forms.Form):
     title = forms.CharField(label="Title", max_length=100)
     contents = forms.CharField(label="Contents", widget=forms.Textarea)
+
+class NewSearchForm(forms.Form):
+    query = forms.CharField(label="Search", max_length=100, widget=forms.TextInput(
+        attrs={'placeholder': 'Search Encyclopedia'}))
 
 def index(request):
     """ Homepage """
@@ -97,3 +104,27 @@ def random_entry(request):
     entries = util.list_entries()
     randEntry = randint(0, len(entries) - 1)
     return redirect(reverse('viewEntry', kwargs={'entry': entries[randEntry]}))
+
+def search_entry(request):
+    query = request.GET.get('q')
+    check = util.get_entry(query)
+
+    # Check if entry exists
+    if check:
+        return redirect(reverse('viewEntry', kwargs={"entry": query}))
+    else:
+        # Check for substring matches, and return if found
+        # Otherwise, return an error page
+        entries = util.list_entries()
+        matches = []
+        for entry in entries:
+            if query.lower() in entry.lower():
+                matches.append(entry)
+        if matches:
+            return render(request, "encyclopedia/results.html", {
+                "matches": matches
+            })
+        else:
+            return render(request, "encyclopedia/error.html", {
+                "error": f"Error, no matching entries found for '{query}'"
+            })  
